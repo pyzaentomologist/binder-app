@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const Book = require("../models/book");
 const uploadPath = path.join("public", Book.coverImageBasePath);
 const Author = require("../models/author");
@@ -14,20 +15,25 @@ const upload = multer({
 });
 
 router.get("/", async (req, res) => {
-  res.send("All Books");
-  // let searchOptions = {};
-  // if (req.query.name != null && req.query.name !== "") {
-  //   searchOptions.name = new RegExp(req.query.name, "i");
-  // }
-  // try {
-  //   const books = await Book.find(searchOptions);
-  //   res.render("books/index", {
-  //     books: books,
-  //     searchOptions: req.query,
-  //   });
-  // } catch {
-  //   res.redirect("/");
-  // }
+  let query = Book.find();
+  if (req.query.title != null && req.query.title !== "") {
+    query = query.regex("title", new RegExp(req.query.title, "i"));
+  }
+  if (req.query.publishedAfter != null && req.query.publishedAfter !== "") {
+    query = query.gte("publishDate", req.query.publishedAfter);
+  }
+  if (req.query.publishedBefore != null && req.query.publishedBefore !== "") {
+    query = query.lte("publishDate", req.query.publishedBefore);
+  }
+  try {
+    const books = await query.exec();
+    res.render("books/index", {
+      books: books,
+      searchOptions: req.query,
+    });
+  } catch {
+    res.redirect("/");
+  }
 });
 
 router.get("/new", async (req, res) => {
@@ -49,9 +55,32 @@ router.post("/", upload.single("cover"), async (req, res) => {
     // res.redirect(`books/${newBook.id}`);
     res.redirect("books");
   } catch {
+    if (book.coverImageName != null) {
+      removeBookCover(book.coverImageName);
+    }
     renderNewPage(res, book, true);
   }
 });
+
+router.get("/:id", (req, res, next) => {
+  Book.deleteOne({ _id: req.params.id })
+    .then(() => {
+      res.status(200).json({
+        message: "Deleted!",
+      });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error,
+      });
+    });
+});
+
+function removeBookCover(fileName) {
+  fs.unlink(path.join(uploadPath, fileName), (err) => {
+    if (err) console.error(err);
+  });
+}
 
 async function renderNewPage(res, book, hasError = false) {
   try {
