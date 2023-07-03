@@ -8,16 +8,21 @@ const authorSchema = new mongoose.Schema({
   },
 });
 
-authorSchema.pre("deleteOne", { query: true }, function (next) {
-  Book.find({ author: this.id }, (err, books) => {
-    if (err) {
-      next(err);
-    } else if (books.length > 0) {
-      next(new Error("This author has books still"));
-    } else {
-      next();
+authorSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    try {
+      const books = await Book.find({ author: this._id }).exec();
+      if (books.length > 0) {
+        next(new Error("This author has books still"));
+      } else {
+        next();
+      }
+    } catch (error) {
+      next(error);
     }
-  });
-});
+  }
+);
 
 module.exports = mongoose.model("Author", authorSchema);
