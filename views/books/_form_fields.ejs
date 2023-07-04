@@ -5,7 +5,8 @@
 <div>
   <label>Author</label>
   <select name="author" id="">
-    <% authors.forEach(author => {%> <% if(author.id === book.author) {%>
+    <% authors.forEach(author => {%> <% if(`${author.id}` === `${book.author}`)
+    {%>
     <option
       selected
       label="<%= author.name %>"
