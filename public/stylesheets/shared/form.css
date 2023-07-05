@@ -1,0 +1,72 @@
+:root {
+  --form-label-fz: 1.2rem;
+  --form-input-border-cl: hsl(var(--cl-base-hue), 100%, 31%);
+  --form-input-bg-cl: hsl(var(--cl-base-hue), 100%, 50%);
+  --form-input-bg-cl-light: hsl(var(--cl-base-hue), 100%, 80%);
+}
+
+.form__row {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.form__item {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.form__item:first-child {
+  margin-left: 0;
+}
+.form__item--no-grow {
+  flex-grow: 0;
+}
+
+.form__row--end {
+  justify-content: flex-end;
+}
+.form__item > label {
+  font-size: var(--form-label-fz);
+  margin-bottom: 0.25rem;
+  margin-left: 0.25rem;
+}
+.form__item input,
+.form__item select,
+.form__item textarea {
+  height: 2rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--form-input-border-cl);
+  background-color: var(--form-input-bg-cl);
+  color: var(--cl-text-light);
+  font-size: 1rem;
+  font-weight: normal;
+  font-family: "Gotham Rounded";
+  outline: none;
+}
+.form__item textarea {
+  height: 100%;
+  resize: none;
+}
+.form__item select option {
+  background-color: black;
+}
+.form__item input:focus,
+.form__item select:focus,
+.form__item textarea:focus {
+  border-color: var(--form-input-border-cl-light);
+}
+
+.filepond--root {
+  font-family: "Gotham Rounded";
+  margin-bottom: 0;
+}
+.filepond--panel-root {
+  background-color: var(--form-input-bg-cl);
+  border: 1px solid var(--form-input-border-cl);
+}
+.filepond--drop-label {
+  color: var(--cl-text-light);
+  font-size: inherit;
+}

@@ -1,37 +1,40 @@
 <h2>Search Books</h2>
 <form action="/books" method="GET">
-  <div>
-    <label>Title</label>
-    <input type="text" name="title" value="<%= searchOptions.title %>" />
+  <div class="form__row">
+    <div class="form__item">
+      <label>Title</label>
+      <input type="text" name="title" value="<%= searchOptions.title %>" />
+    </div>
   </div>
-  <div>
-    <label>Published After</label>
-    <input
-      type="date"
-      name="publishedAfter"
-      value="<%= searchOptions.publishedAfter %>"
-    />
+  <div class="form__row">
+    <div class="form__item">
+      <label>Published After</label>
+      <input
+        type="date"
+        name="publishedAfter"
+        value="<%= searchOptions.publishedAfter %>"
+      />
+    </div>
+    <div class="form__item">
+      <label>Published Before</label>
+      <input
+        type="date"
+        name="publishedBefore"
+        value="<%= searchOptions.publishedBefore %>"
+      />
+    </div>
   </div>
-  <div>
-    <label>Published Before</label>
-    <input
-      type="date"
-      name="publishedBefore"
-      value="<%= searchOptions.publishedBefore %>"
-    />
+  <div class="form__row form__row--end">
+    <button class="btn btn--primary" type="submit">Search</button>
   </div>
-  <button type="submit">Search</button>
 </form>
 
 <div>
   <% books.forEach(book => {%>
-  <div>
-    <a href="/books/<%= book.id %>"
-      ><img height="150" width="100" src="<%= book.coverImagePath %>" alt="" />
-    </a>
-    <a href="/books/<%= book.id %>">View</a>
-    <a href="/books/<%= book.id %>/edit">Edit</a>
-    <%- include('../partials/deleteForm', {url: `/books/${book.id}`}) %>
-  </div>
-  <% }) %>
+  <a href="/books/<%= book.id %>"
+    ><img height="150" width="100" src="<%= book.coverImagePath %>" alt="" />
+  </a>
+  <a href="/books/<%= book.id %>">View</a>
+  <a href="/books/<%= book.id %>/edit">Edit</a>
+  <%- include('../partials/deleteForm', {url: `/books/${book.id}`}) %> <% }) %>
 </div>
