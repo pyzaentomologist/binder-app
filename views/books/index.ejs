@@ -29,12 +29,4 @@
   </div>
 </form>
 
-<div>
-  <% books.forEach(book => {%>
-  <a href="/books/<%= book.id %>"
-    ><img height="150" width="100" src="<%= book.coverImagePath %>" alt="" />
-  </a>
-  <a href="/books/<%= book.id %>">View</a>
-  <a href="/books/<%= book.id %>/edit">Edit</a>
-  <%- include('../partials/deleteForm', {url: `/books/${book.id}`}) %> <% }) %>
-</div>
+<%- include('../partials/bookGrid', { books: books, large: true }) %>
