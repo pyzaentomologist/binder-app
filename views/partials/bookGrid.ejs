@@ -1,0 +1,12 @@
+<% bookCoverClass = locals.large ? "book__cover--large": ''; %> <% bookGridClass
+= locals.large ? "book__grid--large": '' %>
+<div class="book__grid <%= bookGridClass %>">
+  <% books.forEach(book => {%>
+  <a href="/books/<%= book.id %>"
+    ><img
+      class="book__cover <%= bookCoverClass %>"
+      src="<%= book.coverImagePath %>"
+      alt=""
+  /></a>
+  <% }) %>
+</div>
