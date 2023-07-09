@@ -1,5 +1,6 @@
 <h2>Login</h2>
-<form action="/login?_method=POST" method="POST">
+<% if(messages.error){ %> <%= messages.error %> <% } %>
+<form action="/login" method="POST">
   <%- include('./_form_fields.ejs') %>
   <div class="form__row btn__row">
     <button class="btn btn--primary" type="submit">Login</button>

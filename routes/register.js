@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const checkNotAuthenticated = require("../middleware/checkNotAuthenticated");
 
-router.get("/", async (req, res) => {
+router.get("/", checkNotAuthenticated, async (req, res) => {
   res.render("register/index");
 });
 
@@ -14,7 +16,7 @@ router.post("/", async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    const newUser = await user.save();
+    await user.save();
     res.redirect("/login");
   } catch {
     const params = { errorMessage: "Error Register" };
