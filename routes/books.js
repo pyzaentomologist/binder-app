@@ -54,8 +54,11 @@ router.get("/:id", async (req, res) => {
     const book = await Book.findById(req.params.id).populate("author").exec();
     res.render("books/show", { book: book });
   } catch {
-    res.redirect("/");
-    renderEditPage(res, book, true);
+    if (Book.findById(req.params.id) != null) {
+      renderShowPage(res, Book.findById(req.params.id));
+    } else {
+      redirect("/");
+    }
   }
 });
 
@@ -113,6 +116,13 @@ async function renderNewPage(res, book, hasError = false) {
 }
 async function renderEditPage(res, book, hasError = false) {
   renderFormPage(res, book, "edit", hasError);
+}
+async function renderShowPage(res) {
+  try {
+    res.redirect("/books");
+  } catch {
+    res.redirect("/");
+  }
 }
 async function renderFormPage(res, book, form, hasError = false) {
   try {
