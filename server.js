@@ -18,6 +18,7 @@ const session = require("express-session");
 const passport = require("passport");
 const authVariables = require("./middleware/authVariables");
 const checkAuthenticated = require("./middleware/checkAuthenticated");
+const isValidRoute = require("./middleware/isValidRoute");
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -54,4 +55,5 @@ app.use("/books", bookRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 
+app.use(isValidRoute);
 app.listen(process.env.PORT || 3001);
