@@ -4,7 +4,9 @@ const passport = require("passport");
 const User = require("../models/user");
 const initializePassport = require("../passport-config");
 const checkNotAuthenticated = require("../middleware/checkNotAuthenticated");
+const generateAccessToken = require("../middleware/generateAccessToken");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 initializePassport(
   passport,
   async function (email) {
@@ -25,7 +27,15 @@ router.post(
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
-  })
+  }),
+  function (req, res) {
+    const username = req.body;
+    const user = { name: username.email };
+    console.log(user);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+    res.json({ accessToken: accessToken, refreshToken: refreshToken });
+  }
 );
 
 module.exports = router;
