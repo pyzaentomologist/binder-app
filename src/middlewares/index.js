@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const verifyAccessToken = errorHandler(async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log(jwt.verify(token, process.env.ACCESS_TOKEN_SECRET));
+  console.log(authHeader.split(" "));
 
   if (!token) {
     throw new HttpError(401, "Unathorized");

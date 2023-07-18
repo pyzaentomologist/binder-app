@@ -2,8 +2,6 @@ const express = require("express");
 const controllers = require("../controllers");
 const router = express.Router();
 
-function tmp(req, res) {}
-
 router.post("/register", controllers.auth.register);
 router.post("/login", controllers.auth.login);
 router.post("/logout", controllers.auth.logout);

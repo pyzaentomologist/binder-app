@@ -6,21 +6,16 @@ const express = require("express");
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const logger = require("./src/logger");
-const port = process.env.PORT || 3001;
 const methodOverride = require("method-override");
 const routes = require("./src/routes");
 const MongoStore = require("connect-mongo");
-// const indexRouter = require("./src/routes/index");
-// const authRouter = require("./src/views/routes/auth");
-// const authVariables = require("./src/middleware/authVariables");
-// const checkAuthenticated = require("./src/middleware/checkAuthenticated");
-// const isValidRoute = require("./src/middleware/isValidRoute");
 const flash = require("express-flash");
 const session = require("express-session");
 const connectToDatabase = require("./src/database");
+const port = process.env.PORT || 3001;
 
 app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
+app.set("views", __dirname + "/src/views");
 app.set("layout", "layouts/layout");
 app.use(expressLayouts);
 app.use(flash());
@@ -42,13 +37,6 @@ app.use((err, req, res, next) => {
   logger.error(err.stack);
   res.status(err.statusCode || 500).send({ error: err.message });
 });
-// app.use(authVariables);
-// app.use(checkAuthenticated);
-
-// app.use("/", indexRouter);
-// app.use("/auth", authRouter);
-
-// app.use(isValidRoute);
 
 async function startServer() {
   await connectToDatabase();

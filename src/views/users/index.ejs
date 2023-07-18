@@ -1,0 +1,10 @@
+<h2>All users</h2>
+<% users.forEach(user => {%>
+<div class="author__row">
+  <div class="author__name"><%= user.name %></div>
+  <div class="author__name"><%= user.email %></div>
+  <div class="author__name"><%= user.id %></div>
+
+  <%- include('../partials/deleteForm', {url: `/users/${user.id}`}) %>
+</div>
+<% }) %>
