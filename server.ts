@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "prodction") {
 }
 
 const express = require("express");
+import { Request, Response, NextFunction } from "express";
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const logger = require("./src/logger");
@@ -29,11 +30,11 @@ app.use(
 );
 
 app.use(methodOverride("_method"));
-app.use(express.static("public"));
+app.use(express.static("src/public"));
 app.use(express.json());
 app.use(express.urlencoded({ limit: "10mb", extended: false }));
 app.use("/", routes);
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   logger.error(err.stack);
   res.status(err.statusCode || 500).send({ error: err.message });
 });
