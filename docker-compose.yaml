@@ -1,0 +1,15 @@
+version: '3'
+services:
+  api-service:
+    image: node:18
+    container_name: auth_api
+    volumes:
+      - ./node_modules:/node_modules
+      - ./api:/api
+      - ./shared:/shared
+      - ./tsconfig.json:/tsconfig.json
+      - ./package.json:/package.json
+    ports:
+      - '3001:3001'
+    working_dir: /
+    command: npm run ts-node-dev --project api/tsconfig.json -r tsconfig-paths/register api/index.ts
