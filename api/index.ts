@@ -6,7 +6,12 @@ import cors from 'cors'
 import express from 'express'
 import {getGitHubUser} from './github-adapter'
 import {connectToDatabase} from './database'
-import {getUserByGitHubId, createUser, getUserById} from './controllers/gitHubUsers.controller'
+import {
+  getUserByGitHubId,
+  createUser,
+  getUserById,
+  increaseTokenVersion,
+} from './controllers/gitHubUsers.controller'
 import {
   buildTokens,
   setTokens,
@@ -15,7 +20,8 @@ import {
   clearTokens,
 } from './utils/token.util'
 import {config} from './config'
-import {Cookies} from '../shared'
+import {Cookies} from '@shared'
+import {authMiddleware} from './middleware/authMiddleware'
 
 const port = process.env.PORT || 3001
 
@@ -51,9 +57,20 @@ app.get('/refresh', async (req, res) => {
 
   res.end()
 })
-app.get('/logout', async (req, res) => {})
-app.get('/logout-all', async (req, res) => {})
-app.get('/me', async (req, res) => {})
+app.get('/logout', authMiddleware, async (req, res) => {
+  clearTokens(res)
+  res.end()
+})
+app.get('/logout-all', authMiddleware, async (req, res) => {
+  await increaseTokenVersion(res.locals.token.userId)
+
+  clearTokens(res)
+  res.end()
+})
+app.get('/me', authMiddleware, async (req, res) => {
+  const user = await getUserById(res.locals.token.userId)
+  res.json(user)
+})
 
 async function startServer() {
   await connectToDatabase()

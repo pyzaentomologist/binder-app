@@ -1,13 +1,7 @@
 import {Response, CookieOptions} from 'express'
 import jwt from 'jsonwebtoken'
 import {UserGitHubDocument} from 'api/models/userGitHub.model'
-import {
-  AccessTokenPayload,
-  AccessToken,
-  RefreshTokenPayload,
-  RefreshToken,
-  Cookies,
-} from '../../shared'
+import {AccessTokenPayload, AccessToken, RefreshTokenPayload, RefreshToken, Cookies} from '@shared'
 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET!
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET!
